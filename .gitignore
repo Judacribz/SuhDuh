@@ -2,6 +2,7 @@
 bin/
 build/
 main
+backendJude/
 
 #frontend test file output
 *.trfx

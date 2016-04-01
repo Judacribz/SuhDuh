@@ -128,7 +128,7 @@ void Session::logout() {
     printf("Transaction denied. Not logged in\n");
   }else{
   // set logged flag on session
-    printf("You have successfully logged out");
+    printf("You have successfully logged out\n");
     logged_ = false;
     if(admin_){
       write_file(0,"",0,0.0,"A");

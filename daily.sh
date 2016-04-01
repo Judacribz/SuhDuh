@@ -1,7 +1,9 @@
-#!bin/bash
+#!/bin/bash
 #TODO: run frontend over a number of banking transactions
 #save to seperate files
 #at end concatenate output files
+
+frontend/bank.exe
 
 #TODO: run backend over concatenated file
 
