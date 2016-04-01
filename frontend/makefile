@@ -1,6 +1,6 @@
 #### PROJECT SETTINGS ####
 # The name of the executable to be created
-BIN_NAME := main
+BIN_NAME := bank.exe
 # Compiler used
 CXX ?= clang++
 # Extension of source files used in the project

@@ -1,6 +1,11 @@
+#general
 bin/
 build/
 main
+
+#frontend test file output
+*.trfx
+*.outx
 
 #Java
 *.class
