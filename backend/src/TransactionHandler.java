@@ -25,7 +25,7 @@ public TransactionHandler(ArrayList<Account> accs,ArrayList<Transaction> trans){
 
 //Increment the transaction count on the current account
 public void IncTrans(){
-  //If admin it doesnt not count as a transaction
+	//If admin it doesnt not count as a transaction
 	if(!adminSession) {
 		curAcc.totalTransactions++;
 	}
@@ -33,7 +33,7 @@ public void IncTrans(){
 
 //Charge accounts the transaction fee
 public void ChargeAccount(){
-  //check if session is admin if so no fees
+	//check if session is admin if so no fees
 	if(!adminSession) {
 		if(curAcc.isStudent) {
 			curAcc.currentBalance -= 0.05;
@@ -52,12 +52,6 @@ public ArrayList<Account> HandleTransactions(){
 		if(trans!=null) {
 			//Check what type of transaction we are dealing with
 
-      //-----------------------
-      // Not Fully Complete
-      //  Just Infrastructure
-      //    For Next Phase!!!
-      //------------------------
-
 			switch(trans.transType) {
 //End of session
 			case 0:
@@ -67,17 +61,32 @@ public ArrayList<Account> HandleTransactions(){
 				break;
 //Withdrawal
 			case 1:
-				curAcc.currentBalance -= trans.moneyInvolved;
-				IncTrans();
-				ChargeAccount();
-				System.out.println("Withdrawl Successful");
-				break;
-//Transfer -- 
-			case 2:
-				if ( (transfer % 2) != 0){
-					accounts.get(trans.accountNum).currentBalance -= trans.moneyInvolved;
-					ChargeAccount();
+				if(curAcc.currentBalance - trans.moneyInvolved < 0) {
+					curAcc.currentBalance -= trans.moneyInvolved;
 					IncTrans();
+					ChargeAccount();
+					System.out.println("Withdrawl Successful");
+				}else{
+					System.out.println("Withdrawl Failed");
+				}
+
+				break;
+//Transfer --
+			case 2:
+				if(transfer==0) {
+					System.out.println("Transactions Failed");
+					break;
+				}
+				if ( (transfer % 2) != 0) {
+					if((accounts.get(trans.accountNum).currentBalance - trans.moneyInvolved) > 0) {
+						accounts.get(trans.accountNum).currentBalance -= trans.moneyInvolved;
+						ChargeAccount();
+						IncTrans();
+					}else{
+						System.out.println("Transaction Failed");
+						transfer=-1;
+						break;
+					}
 				}
 				else {
 					accounts.get(trans.accountNum).currentBalance += trans.moneyInvolved;
@@ -87,44 +96,68 @@ public ArrayList<Account> HandleTransactions(){
 				break;
 //Paybill
 			case 3:
-				curAcc.currentBalance -= trans.moneyInvolved;
-				ChargeAccount();
-				IncTrans();
-				System.out.println("Bills Paid");
+				if((curAcc.currentBalance - trans.moneyInvolved) > 0 ) {
+					curAcc.currentBalance -= trans.moneyInvolved;
+					ChargeAccount();
+					IncTrans();
+					System.out.println("Bills Paid");
+				}else{
+					System.out.println("Transaction Failed");
+				}
 				break;
 //Deposit
 			case 4:
-		        curAcc.currentBalance+=trans.moneyInvolved;
-		        IncTrans();
-		        ChargeAccount();
+				curAcc.currentBalance+=trans.moneyInvolved;
+				IncTrans();
+				ChargeAccount();
 				System.out.println("Deposit Successful");
 				break;
-//Create - Admin -- 
+//Create - Admin --
 			case 5:
-				int newNum = accounts.size();
-				Account newAccount = new Account(newNum, trans.accountName, true, trans.moneyInvolved, 0, false);
-				accounts.add(newNum, newAccount);
-				System.out.println("Account Created");
+				if(adminSession) {
+					int newNum = accounts.size();
+					Account newAccount = new Account(newNum, trans.accountName, true, trans.moneyInvolved, 0, false);
+					accounts.add(newNum, newAccount);
+					System.out.println("Account Created");
+				}else{
+					System.out.println("Insufficent Priviledge");
+				}
 				break;
 //Delete - Admin
 			case 6:
-				accounts.remove(trans.accountNum);
-				System.out.println("Account Deleted");
+				if(adminSession) {
+					accounts.remove(trans.accountNum);
+					System.out.println("Account Deleted");
+				}else{
+					System.out.println("Insufficent Priviledge");
+				}
 				break;
 //Disable - Admin
 			case 7:
-				accounts.get(trans.accountNum).isActive = false;
-				System.out.println("Account Disabled");
+				if(adminSession) {
+					accounts.get(trans.accountNum).isActive = false;
+					System.out.println("Account Disabled");
+				}else{
+					System.out.println("Insufficent Priviledge");
+				}
 				break;
 //ChangePlan - Admin
 			case 8:
-				accounts.get(trans.accountNum).isStudent = !accounts.get(trans.accountNum).isStudent;
-				System.out.println("Plan Changed");
+				if(adminSession) {
+					accounts.get(trans.accountNum).isStudent = !accounts.get(trans.accountNum).isStudent;
+					System.out.println("Plan Changed");
+				}else{
+					System.out.println("Insufficent Priviledge");
+				}
 				break;
-//Enable Account - Admin -- 
+//Enable Account - Admin --
 			case 9:
-				accounts.get(trans.accountNum).isActive = true;
-				System.out.println("Account Enabled");
+				if(adminSession) {
+					accounts.get(trans.accountNum).isActive = true;
+					System.out.println("Account Enabled");
+				}else{
+					System.out.println("Insufficent Priviledge");
+				}
 				break;
 //Login
 			case 10:
