@@ -31,7 +31,7 @@ public void writeAccounts(boolean master){
 		Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "utf-8"));
 		//iterate through all accounts and write them to file
 		for(Account acc : accounts) {
-			if(acc!=null) {
+			if(acc!=null && acc.accountNum!=0) {
 				writer.write(acc.toString(master)+"\n");
 			}
 		}
