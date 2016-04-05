@@ -23,7 +23,7 @@ do
 		#seconds argument is the outputed transaction file
 		#inputs the inputfile
 		#outputs an output file
-		../bank.exe CurrentAccount.txt ${fileName%.*}.trfx < $inputFile > ${fileName%.*}.outx
+		../bank.exe CurrentBankAccounts.dat ${fileName%.*}.trfx < $inputFile > ${fileName%.*}.outx
 
 		#checks if file is created from the bank
 		#if file is not created, then create an empty file

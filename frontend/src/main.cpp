@@ -26,8 +26,8 @@ int main(int argc, char* argv[]) {
     accounts_file = argv[1];
     transaction_file = argv[2];
   }else{
-    accounts_file = "CurrentAccount.txt";
-    transaction_file = "transactions.atf";
+    accounts_file = "CurrentBankAccounts.dat";
+    transaction_file = "Transactions.trf";
   }
 
   std::string input;  // holds input

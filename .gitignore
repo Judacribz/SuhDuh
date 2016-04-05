@@ -3,6 +3,7 @@ bin/
 build/
 main
 backendJude/
+junit_report/
 
 #frontend test file output
 *.trfx

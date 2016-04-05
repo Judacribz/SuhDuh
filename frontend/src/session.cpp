@@ -94,7 +94,7 @@ void Session::read_accounts() {
       student = true;
     }
 
-    // printf("%d %s %f\n", id, name.c_str(), balance);
+    //printf("%d %s %f\n", id, name.c_str(), balance); //debug
 
     Account curr = Account(id, name, balance, enabled, student);
     if (!accounts_.count(name)) {
