@@ -2,8 +2,10 @@
 #TODO: run frontend over a number of banking transactions
 #save to seperate files
 #at end concatenate output files
-
-frontend/bank.exe
+for i in {0..2}
+do
+  frontend/bank.exe frontend/CurrentBankAccounts.dat ${i}Transactions.trf
+done;
 
 #TODO: run backend over concatenated file
 
