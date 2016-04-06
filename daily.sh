@@ -3,10 +3,15 @@
 #save to seperate files
 #at end concatenate output files
 
+#path setup.
 path=$(pwd)
 front=$path/frontend
 txn=$path/txns
 in=$path/inputs
+
+#makes transaction file directory if it doesnt exist.
+[ -d $txn ] || mkdir $txn
+
 
 for i in {0..2}
 do
