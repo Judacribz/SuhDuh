@@ -2,7 +2,7 @@
 //the new current accounts and master accounts files
 //Created from main and interfaces with the Accounts class
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -12,10 +12,10 @@ import java.io.Writer;
 public class BankAccountWriter {
 
 //List of accounts to write
-private ArrayList<Account> accounts;
+private HashMap<Integer, Account> accounts;
 
 //BanckAccountWriter Constructor
-public BankAccountWriter(ArrayList<Account> newAccounts){
+public BankAccountWriter(HashMap<Integer, Account> newAccounts){
 	//assign the accounts to be used from the parameter
 	accounts = newAccounts;
 }
@@ -30,9 +30,9 @@ public void writeAccounts(boolean master){
 		//open up file using decided name
 		Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "utf-8"));
 		//iterate through all accounts and write them to file
-		for(Account acc : accounts) {
-			if(acc!=null && acc.accountNum!=0) {
-				writer.write(acc.toString(master)+"\n");
+		for(HashMap.Entry<Integer,Account> acc : accounts.entrySet()) {
+			if(acc.getValue()!=null && acc.getValue().accountNum!=0) {
+				writer.write(acc.getValue().toString(master)+"\n");
 			}
 		}
 		writer.close();
