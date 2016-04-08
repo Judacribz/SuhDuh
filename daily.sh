@@ -33,4 +33,4 @@ done;
 cd $back
 ant run
 cd $path
-cp $back/$current $front/$current.dkfkjs
+cp $back/$current $front/$current
