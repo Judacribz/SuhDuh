@@ -54,7 +54,7 @@ class Session {
 /**
  * Writes into a transaction file
  */
-  void write_file(int trans_num, std::string name = "", int account_id = 0, float value = 0, std::string misc = "");
+  void write_file(int trans_num, std::string name = "", int account_id = 0, float value = 0, std::string misc = "00");
 
  public:
   Session(std::string account_file, std::string transaction_file); // default constructor
