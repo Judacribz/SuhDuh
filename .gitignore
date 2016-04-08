@@ -9,6 +9,10 @@ junit_report/
 *.trfx
 *.outx
 
+#Integrated generated files
+*.trf
+*.day*
+
 #Java
 *.class
 
