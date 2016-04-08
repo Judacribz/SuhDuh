@@ -5,7 +5,7 @@ path=$(pwd)
 front=$path/frontend
 back=$path/backend
 txn=$path/txns
-in=$path/inputs
+in=$1
 merged=$back/Transactions.trf
 current=CurrentBankAccounts.dat
 
