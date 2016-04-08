@@ -1,14 +1,12 @@
 #!/bin/bash
-#TODO: run frontend over a number of banking transactions
-#save to seperate files
-#at end concatenate output files
 
 #path setup.
 path=$(pwd)
 front=$path/frontend
+back=$path/backend
 txn=$path/txns
 in=$path/inputs
-merged=$txn/merged.trf
+merged=$back/Transactions.trf
 
 #makes transaction file directory if it doesnt exist.
 [ -d $txn ] || mkdir $txn
@@ -28,6 +26,10 @@ do
   cat $txn/$i >> $merged
   echo " " >> $merged #adds a newline to the file because cat doesn't
 done;
-#TODO: run backend over concatenated file
+
+#TODO: get backend to parse transactions properly
+
+cd $back
+ant run
 
 echo "Implement the script to run the daily system here"

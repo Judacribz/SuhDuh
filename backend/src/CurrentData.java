@@ -82,7 +82,7 @@ public void getTransactions(){
 	transactions.add(0, null);
 	//read transaction file and tokenize what we need from it
 	try {
-		FileReader fileReader = new FileReader("Transactions.trans");
+		FileReader fileReader = new FileReader("Transactions.trf");
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 
 		while((line = bufferedReader.readLine()) != null) {
