@@ -30,7 +30,7 @@ void Session::login() {
     // check for admin, user, or invalid
     if(input == "admin"){
       admin_ = true;
-      write_file(10,"",0,0.0,"A");
+      write_file(10,"",0,0.0,"A ");
     }else if(input == "user"){
       printf("Please enter your name:\n");
       getline(std::cin,name);
@@ -42,7 +42,7 @@ void Session::login() {
       }
       name_ = name;
       admin_ = false;
-      write_file(10,name_,0,0.0,"S");
+      write_file(10,name_,0,0.0,"S ");
     }else{
       printf("Login failed, you must specify either admin or user\n");
       return;
@@ -131,9 +131,9 @@ void Session::logout() {
     printf("You have successfully logged out\n");
     logged_ = false;
     if(admin_){
-      write_file(0,"",0,0.0,"A");
+      write_file(0,"",0,0.0);
     }else{
-      write_file(0,name_,0,0.0,"S");
+      write_file(0,name_,0,0.0);
     }
     exit(0);
   }
@@ -219,7 +219,7 @@ void Session::withdrawal() {
   }
   daily_withdraw = daily_withdraw - (value/100.0);
   printf("Withdrawal of $%0.2f was successful\n",value/100.0);
-  write_file(1,name,account_id,actual_value,"");
+  write_file(1,name,account_id,actual_value);
 }
 
 void Session::deposit() {
@@ -290,7 +290,7 @@ void Session::deposit() {
     actual_value = value;
   }
   printf("Deposit successful, your deposit will be on hold until the next day\n");
-  write_file(4,name,account_id,actual_value,"");
+  write_file(4,name,account_id,actual_value);
 }
 
 void Session::changeplan() {
@@ -422,8 +422,8 @@ void Session::transfer() {
   }
   daily_transfer = daily_transfer - (value / 100.0);
   printf("Transfer from %d to %d of $%0.2f was successful\n", account_id_1, account_id_2, value/100.0);
-  write_file(2,name,account_id_1,actual_value,"");
-  write_file(2,name,account_id_2,value,"");
+  write_file(2,name,account_id_1,actual_value);
+  write_file(2,name,account_id_2,value);
 }
 
 
