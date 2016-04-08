@@ -13,7 +13,8 @@ acc=$path/masterBankAccounts
 #makes Master bank accounts directory for each day.
 for i in {0..4}
 do
-    #./daily.sh $in/input${i}
-    ./daily.sh
+    print $in
+    ./daily.sh $in/input${i}
+ 
     cp $back/MasterBankAccounts.dat $acc/MasterBankAccounts.day${i}
 done
