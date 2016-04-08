@@ -7,17 +7,18 @@ back=$path/backend
 txn=$path/txns
 in=$path/inputs
 merged=$back/Transactions.trf
+current=CurrentBankAccounts.dat
 
 #makes transaction file directory if it doesnt exist.
 [ -d $txn ] || mkdir $txn
 
 # deletes merged file if there is one
-rm -rf $txn/merged.trf
+rm -rf $merged
 
 # iterate over every file in the inputs directory
 for i in $(ls $in)
 do
-  $front/bank.exe $front/CurrentBankAccounts.dat $txn/${name}.trf < $in/$i
+  $front/bank.exe $front/CurrentBankAccounts.dat $txn/${i}.trf < $in/$i
 done;
 
 #iterate over every file in the transactions directory
@@ -31,5 +32,5 @@ done;
 
 cd $back
 ant run
-
-echo "Implement the script to run the daily system here"
+cd $path
+cp $back/$current $front/$current.dkfkjs
