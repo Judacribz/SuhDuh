@@ -3,11 +3,12 @@
 //Requires data to be created from currentData and then passed
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TransactionHandler {
 
 //Working set of accounts
-private ArrayList<Account> accounts;
+private HashMap<Integer, Account> accounts;
 //The transactions to process
 private ArrayList<Transaction> transactions;
 //The account we are currently applying transactions to
@@ -16,7 +17,7 @@ private boolean adminSession;
 private int transfer = 1;
 
 //constructor which takes in the transactions to process
-public TransactionHandler(ArrayList<Account> accs,ArrayList<Transaction> trans){
+public TransactionHandler(HashMap<Integer, Account> accs,ArrayList<Transaction> trans){
 	//set our current working accounts to the ones passed in
 	accounts = accs;
 	//set current transactions to those passed in
@@ -45,7 +46,7 @@ public void ChargeAccount(){
 
 //Handle all transactions and update the accounts list
 //Once complete return the new modified accounts list
-public ArrayList<Account> HandleTransactions(){
+public HashMap<Integer, Account> HandleTransactions(){
 	//iterate over each transaction
 	for(Transaction trans : transactions) {
 		//Check if the transaction exists
@@ -117,7 +118,7 @@ public ArrayList<Account> HandleTransactions(){
 				if(adminSession) {
 					int newNum = accounts.size();
 					Account newAccount = new Account(newNum, trans.accountName, true, trans.moneyInvolved, 0, false);
-					accounts.add(newNum, newAccount);
+					accounts.put(newNum, newAccount);
 					System.out.println("Account Created");
 				}else{
 					System.out.println("Insufficent Priviledge");

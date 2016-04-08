@@ -6,19 +6,20 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.ArrayList;
 
 public class CurrentData {
 
 //Arraylist used to store the accounts within the system
-public ArrayList<Account> accounts = new ArrayList<Account>();
+public HashMap<Integer, Account> accounts = new HashMap<Integer, Account>();
 //Arraylist for storing all the transactions being processed today
 public ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 
 //Reads in the accounts from the current master accounts file
 public void getCurrentAccounts(){
 	String line = null;
-	accounts.add(0, new Account(00000,"ADMIN",true,0,0,false));
+	accounts.put(0, new Account(00000,"ADMIN",true,0,0,false));
 	//begin the readin from accounts file
 	try {
 		FileReader fileReader = new FileReader("MasterBankAccounts.dat");
@@ -59,10 +60,10 @@ public void getCurrentAccounts(){
 			                              Double.parseDouble(balance), Integer.parseInt(totalTransaction), student);
 
 			//Add new account to the accounts list
-			accounts.add(Integer.parseInt(accountNum), account);
+			accounts.put(Integer.parseInt(accountNum), account);
 		}
 		bufferedReader.close();
-	System.out.println("Accounts Successfully Read In");
+		System.out.println("Accounts Successfully Read In");
 	}
 	//Gracefully handle any errors
 	catch(FileNotFoundException e) {
@@ -116,10 +117,8 @@ public void getTransactions(){
 
 //Helper function for displaying all of the currently read in accounts
 public void printAccounts(){
-	int i = 1;
-	while(i < accounts.size()) {
-		System.out.println(accounts.get(i).toString(true));
-		i++;
+	for(HashMap.Entry<Integer,Account> acc : accounts.entrySet()) {
+		System.out.println(acc.getValue().toString(true));
 	}
 }
 
