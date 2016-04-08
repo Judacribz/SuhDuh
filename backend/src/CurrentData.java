@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.lang.String.*;
 
 public class CurrentData {
 
@@ -38,7 +39,7 @@ public void getCurrentAccounts(){
 			studentStr = line.substring(43,44);
 
 			//Trim account names trailing white space
-			accountName.trim();
+			accountName = accountName.trim();
 
 			if ( activeStr.equals("A")) {
 				active = true;
@@ -93,7 +94,9 @@ public void getTransactions(){
 			misc = line.substring(39,41);
 
 			//Trim account names trailing white space
-			name.trim();
+			name = name.trim();
+			//Trim misc data
+			misc = misc.trim();
 
 			//Create a new transaction from the information read in
 			//0 - TransNum, 1 - Name, 2 - AccountNum, 3 - Money, 4 - MiscInfo

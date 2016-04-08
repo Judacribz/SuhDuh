@@ -53,6 +53,11 @@ public HashMap<Integer, Account> HandleTransactions(){
 		if(trans!=null) {
 			//Check what type of transaction we are dealing with
 			curAcc = accounts.get(trans.accountNum);
+			if(trans.miscInfo.equals("A")) {
+				adminSession = true;
+			}else{
+				adminSession = false;
+			}
 			System.out.println(curAcc.toString(true));
 			switch(trans.transType) {
 //End of session
@@ -61,7 +66,7 @@ public HashMap<Integer, Account> HandleTransactions(){
 				break;
 //Withdrawal
 			case 1:
-				if(curAcc.currentBalance - trans.moneyInvolved > 0) {
+				if(curAcc.currentBalance - ((adminSession ? 0 : (curAcc.isStudent ? 0.05 : 0.1))+trans.moneyInvolved) > 0) {
 					curAcc.currentBalance -= trans.moneyInvolved;
 					IncTrans();
 					ChargeAccount();
@@ -78,7 +83,7 @@ public HashMap<Integer, Account> HandleTransactions(){
 					break;
 				}
 				if ( (transfer % 2) != 0) {
-					if((accounts.get(trans.accountNum).currentBalance - trans.moneyInvolved) > 0) {
+					if(accounts.get(trans.accountNum).currentBalance - ((adminSession ? 0 : (curAcc.isStudent ? 0.05 : 0.1))+trans.moneyInvolved) > 0) {
 						accounts.get(trans.accountNum).currentBalance -= trans.moneyInvolved;
 						ChargeAccount();
 						IncTrans();
@@ -96,7 +101,7 @@ public HashMap<Integer, Account> HandleTransactions(){
 				break;
 //Paybill
 			case 3:
-				if((curAcc.currentBalance - trans.moneyInvolved) > 0 ) {
+				if(curAcc.currentBalance - ((adminSession ? 0 : (curAcc.isStudent ? 0.05 : 0.1))+trans.moneyInvolved) > 0 ) {
 					curAcc.currentBalance -= trans.moneyInvolved;
 					ChargeAccount();
 					IncTrans();
@@ -107,10 +112,15 @@ public HashMap<Integer, Account> HandleTransactions(){
 				break;
 //Deposit
 			case 4:
-				curAcc.currentBalance+=trans.moneyInvolved;
-				IncTrans();
-				ChargeAccount();
-				System.out.println("Deposit Successful");
+				if((curAcc.currentBalance+trans.moneyInvolved)<99999.99 && (curAcc.currentBalance+trans.moneyInvolved)- ((adminSession ? 0 : (curAcc.isStudent ? 0.05 : 0.1))+trans.moneyInvolved) > 0 ) {
+					curAcc.currentBalance+=trans.moneyInvolved;
+					IncTrans();
+					ChargeAccount();
+					System.out.println("Deposit Successful");
+				}else{
+					System.out.println("Deposit Failed!");
+					break;
+				}
 				break;
 //Create - Admin --
 			case 5:
@@ -126,6 +136,7 @@ public HashMap<Integer, Account> HandleTransactions(){
 //Delete - Admin
 			case 6:
 				if(adminSession) {
+					System.out.println(curAcc.accountNum);
 					accounts.remove(trans.accountNum);
 					System.out.println("Account Deleted");
 				}else{
@@ -161,15 +172,8 @@ public HashMap<Integer, Account> HandleTransactions(){
 				break;
 //Login
 			case 10:
-
 				//check if valid account
 				if(curAcc!=null) {
-					//check if the current session is to be an admin session
-					if(trans.miscInfo.equals("A")) {
-						adminSession = true;
-					}else{
-						adminSession = false;
-					}
 					//display which account is logged in
 					System.out.println(trans.accountName + " Session Started "+((adminSession==true) ? "Admin" : "Standard"));
 				}else{
