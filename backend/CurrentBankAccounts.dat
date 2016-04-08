@@ -8,8 +8,8 @@
 00008 Student Account      A 10000.00 S
 00009 Not Student          A 00000.00 N
 00010 Disable Trans        D 00000.00 N
-00011 Trans Acc            A 01799.90 N
-00012 Dummy Trans          A 00200.00 N
+00011 Trans Acc            A 01599.80 N
+00012 Dummy Trans          A 00400.00 N
 00013 Dan Hope             D 00100.00 N
 00014 DanHope              A 00100.00 N
 00015 Default User         D 01000.00 N

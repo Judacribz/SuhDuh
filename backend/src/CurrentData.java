@@ -17,38 +17,36 @@ public ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 
 //Reads in the accounts from the current master accounts file
 public void getCurrentAccounts(){
-	boolean active, student;
 	String line = null;
-	String[] strArray = null;
 	accounts.add(0, new Account(00000,"ADMIN",true,0,0,false));
 	//begin the readin from accounts file
 	try {
-		FileReader fileReader = new FileReader("OldMasterBankAccounts.dat");
+		FileReader fileReader = new FileReader("MasterBankAccounts.dat");
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 
 		//tokenize each line of file into the data we need for the Account class
+		String accountNum, accountName, activeStr, balance, totalTransaction, studentStr;
+		boolean active, student;
 		while((line = bufferedReader.readLine()) != null) {
-			strArray = line.split("_");
 
-			for ( int i=0; i<6; i++) {
-				int j = i;
-				while(j < strArray.length && strArray[j].isEmpty()) {
-					j++;
-				}
-				if(j>i && j<strArray.length) {
-					strArray[i] = strArray[j];
-					strArray[j] = "";
-				}
-			}
+			accountNum = line.substring(0,5);
+			accountName = line.substring(6,26);
+			activeStr = line.substring(27,28);
+			balance = line.substring(29,37);
+			totalTransaction = line.substring(38,42);
+			studentStr = line.substring(43,44);
 
-			if ( strArray[2].equals("A")) {
+			//Trim account names trailing white space
+			accountName.trim();
+
+			if ( activeStr.equals("A")) {
 				active = true;
 			}
 			else {
 				active = false;
 			}
 
-			if ( strArray[5].equals("S")) {
+			if ( studentStr.equals("S")) {
 				student = true;
 			}
 			else {
@@ -57,11 +55,11 @@ public void getCurrentAccounts(){
 
 			//Create a new Account from the data
 			//0 - AccountNum, 1 - AccountName, 3 - Balance, 4 - Total Transaction
-			Account account = new Account(Integer.parseInt(strArray[0]), strArray[1], active,
-			                              Double.parseDouble(strArray[3]), Integer.parseInt(strArray[4]), student);
+			Account account = new Account(Integer.parseInt(accountNum), accountName, active,
+			                              Double.parseDouble(balance), Integer.parseInt(totalTransaction), student);
 
 			//Add new account to the accounts list
-			accounts.add(Integer.parseInt(strArray[0]), account);
+			accounts.add(Integer.parseInt(accountNum), account);
 		}
 		bufferedReader.close();
 	System.out.println("Accounts Successfully Read In");
@@ -71,38 +69,35 @@ public void getCurrentAccounts(){
 		System.out.println( "Unable to open file OldMasterBankAccounts.dat. Please make sure file is in the Project folder.");
 	}
 	catch(IOException e) {
-		System.out.println("Error reading file OldMasterBankAccounts.dat");
+		System.out.println("Error reading file MasterBankAccounts.dat");
 	}
 }
 
 //Read in the transaction files and add them to the transactions log
 public void getTransactions(){
 	String line = null;
-	String[] strArray = null;
 	transactions.add(0, null);
 	//read transaction file and tokenize what we need from it
 	try {
 		FileReader fileReader = new FileReader("Transactions.trf");
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 
+		String transNum, name, accountNum, money, misc;
 		while((line = bufferedReader.readLine()) != null) {
-			strArray = line.split("_");
 
-			for ( int i=0; i<5; i++) {
-				int j = i;
-				while(j < strArray.length && strArray[j].isEmpty()) {
-					j++;
-				}
-				if(j>i && j<strArray.length) {
-					strArray[i] = strArray[j];
-					strArray[j] = "";
-				}
-			}
+			transNum = line.substring(0,2);
+			name = line.substring(3,23);
+			accountNum = line.substring(24,29);
+			money = line.substring(30,38);
+			misc = line.substring(39,41);
+
+			//Trim account names trailing white space
+			name.trim();
 
 			//Create a new transaction from the information read in
 			//0 - TransNum, 1 - Name, 2 - AccountNum, 3 - Money, 4 - MiscInfo
-			Transaction trans = new Transaction(Integer.parseInt(strArray[0]), strArray[1],
-			                                    Integer.parseInt(strArray[2]), Double.parseDouble(strArray[3]), strArray[4]);
+			Transaction trans = new Transaction(Integer.parseInt(transNum), name,
+			                                    Integer.parseInt(accountNum), Double.parseDouble(money), misc);
 
 			//Add transaction to our transaction list
 			transactions.add(trans);
