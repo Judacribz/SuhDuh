@@ -16,8 +16,6 @@ public static void main(String[] args){
 	data.getCurrentAccounts();
 	//get the transactions from the transaction log
 	data.getTransactions();
-	data.printAccounts();
-
 
 	//Process transactions that have been read in by currentData
 	TransactionHandler transHandler = new TransactionHandler(data.accounts, data.transactions);

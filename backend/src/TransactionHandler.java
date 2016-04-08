@@ -52,17 +52,16 @@ public HashMap<Integer, Account> HandleTransactions(){
 		//Check if the transaction exists
 		if(trans!=null) {
 			//Check what type of transaction we are dealing with
-
+			curAcc = accounts.get(trans.accountNum);
+			System.out.println(curAcc.toString(true));
 			switch(trans.transType) {
 //End of session
 			case 0:
-				System.out.println(curAcc.toString(true) + " Session Ended");
-				//End our session with current account;
-				curAcc = null;
+				System.out.println(trans.accountName + " Session Ended");
 				break;
 //Withdrawal
 			case 1:
-				if(curAcc.currentBalance - trans.moneyInvolved < 0) {
+				if(curAcc.currentBalance - trans.moneyInvolved > 0) {
 					curAcc.currentBalance -= trans.moneyInvolved;
 					IncTrans();
 					ChargeAccount();
@@ -162,8 +161,7 @@ public HashMap<Integer, Account> HandleTransactions(){
 				break;
 //Login
 			case 10:
-				//set current working account based on login
-				curAcc = accounts.get(trans.accountNum);
+
 				//check if valid account
 				if(curAcc!=null) {
 					//check if the current session is to be an admin session
@@ -173,7 +171,7 @@ public HashMap<Integer, Account> HandleTransactions(){
 						adminSession = false;
 					}
 					//display which account is logged in
-					System.out.println(curAcc.toString(true) + " Session Started "+((adminSession==true) ? "Admin" : "Standard"));
+					System.out.println(trans.accountName + " Session Started "+((adminSession==true) ? "Admin" : "Standard"));
 				}else{
 					System.out.println("Invalid Account");
 				}
@@ -182,6 +180,7 @@ public HashMap<Integer, Account> HandleTransactions(){
 				System.out.println("Unknown Transaction Type???");
 				break;
 			}
+			System.out.println(curAcc.toString(true));
 		}
 	}
 	return accounts;

@@ -19,7 +19,7 @@ public ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 //Reads in the accounts from the current master accounts file
 public void getCurrentAccounts(){
 	String line = null;
-	accounts.put(0, new Account(00000,"ADMIN",true,0,0,false));
+	accounts.put(0, new Account(00000,"NULL ACCOUNT",true,0,0,false));
 	//begin the readin from accounts file
 	try {
 		FileReader fileReader = new FileReader("MasterBankAccounts.dat");
@@ -80,7 +80,7 @@ public void getTransactions(){
 	transactions.add(0, null);
 	//read transaction file and tokenize what we need from it
 	try {
-		FileReader fileReader = new FileReader("Transactions.trf");
+		FileReader fileReader = new FileReader("testTransactions.trf");
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 
 		String transNum, name, accountNum, money, misc;
