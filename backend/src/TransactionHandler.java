@@ -3,11 +3,12 @@
 //Requires data to be created from currentData and then passed
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TransactionHandler {
 
 //Working set of accounts
-private ArrayList<Account> accounts;
+private HashMap<Integer, Account> accounts;
 //The transactions to process
 private ArrayList<Transaction> transactions;
 //The account we are currently applying transactions to
@@ -16,7 +17,7 @@ private boolean adminSession;
 private int transfer = 1;
 
 //constructor which takes in the transactions to process
-public TransactionHandler(ArrayList<Account> accs,ArrayList<Transaction> trans){
+public TransactionHandler(HashMap<Integer, Account> accs,ArrayList<Transaction> trans){
 	//set our current working accounts to the ones passed in
 	accounts = accs;
 	//set current transactions to those passed in
@@ -45,23 +46,27 @@ public void ChargeAccount(){
 
 //Handle all transactions and update the accounts list
 //Once complete return the new modified accounts list
-public ArrayList<Account> HandleTransactions(){
+public HashMap<Integer, Account> HandleTransactions(){
 	//iterate over each transaction
 	for(Transaction trans : transactions) {
 		//Check if the transaction exists
 		if(trans!=null) {
 			//Check what type of transaction we are dealing with
-
+			curAcc = accounts.get(trans.accountNum);
+			if(trans.miscInfo.equals("A")) {
+				adminSession = true;
+			}else{
+				adminSession = false;
+			}
+			System.out.println(curAcc.toString(true));
 			switch(trans.transType) {
 //End of session
 			case 0:
-				System.out.println(curAcc.toString(true) + " Session Ended");
-				//End our session with current account;
-				curAcc = null;
+				System.out.println(trans.accountName + " Session Ended");
 				break;
 //Withdrawal
 			case 1:
-				if(curAcc.currentBalance - trans.moneyInvolved < 0) {
+				if(curAcc.currentBalance - ((adminSession ? 0 : (curAcc.isStudent ? 0.05 : 0.1))+trans.moneyInvolved) > 0) {
 					curAcc.currentBalance -= trans.moneyInvolved;
 					IncTrans();
 					ChargeAccount();
@@ -78,7 +83,7 @@ public ArrayList<Account> HandleTransactions(){
 					break;
 				}
 				if ( (transfer % 2) != 0) {
-					if((accounts.get(trans.accountNum).currentBalance - trans.moneyInvolved) > 0) {
+					if(accounts.get(trans.accountNum).currentBalance - ((adminSession ? 0 : (curAcc.isStudent ? 0.05 : 0.1))+trans.moneyInvolved) > 0) {
 						accounts.get(trans.accountNum).currentBalance -= trans.moneyInvolved;
 						ChargeAccount();
 						IncTrans();
@@ -96,7 +101,7 @@ public ArrayList<Account> HandleTransactions(){
 				break;
 //Paybill
 			case 3:
-				if((curAcc.currentBalance - trans.moneyInvolved) > 0 ) {
+				if(curAcc.currentBalance - ((adminSession ? 0 : (curAcc.isStudent ? 0.05 : 0.1))+trans.moneyInvolved) > 0 ) {
 					curAcc.currentBalance -= trans.moneyInvolved;
 					ChargeAccount();
 					IncTrans();
@@ -107,17 +112,22 @@ public ArrayList<Account> HandleTransactions(){
 				break;
 //Deposit
 			case 4:
-				curAcc.currentBalance+=trans.moneyInvolved;
-				IncTrans();
-				ChargeAccount();
-				System.out.println("Deposit Successful");
+				if((curAcc.currentBalance+trans.moneyInvolved)<99999.99 && (curAcc.currentBalance+trans.moneyInvolved)- ((adminSession ? 0 : (curAcc.isStudent ? 0.05 : 0.1))+trans.moneyInvolved) > 0 ) {
+					curAcc.currentBalance+=trans.moneyInvolved;
+					IncTrans();
+					ChargeAccount();
+					System.out.println("Deposit Successful");
+				}else{
+					System.out.println("Deposit Failed!");
+					break;
+				}
 				break;
 //Create - Admin --
 			case 5:
 				if(adminSession) {
 					int newNum = accounts.size();
 					Account newAccount = new Account(newNum, trans.accountName, true, trans.moneyInvolved, 0, false);
-					accounts.add(newNum, newAccount);
+					accounts.put(newNum, newAccount);
 					System.out.println("Account Created");
 				}else{
 					System.out.println("Insufficent Priviledge");
@@ -126,6 +136,7 @@ public ArrayList<Account> HandleTransactions(){
 //Delete - Admin
 			case 6:
 				if(adminSession) {
+					System.out.println(curAcc.accountNum);
 					accounts.remove(trans.accountNum);
 					System.out.println("Account Deleted");
 				}else{
@@ -161,18 +172,10 @@ public ArrayList<Account> HandleTransactions(){
 				break;
 //Login
 			case 10:
-				//set current working account based on login
-				curAcc = accounts.get(trans.accountNum);
 				//check if valid account
 				if(curAcc!=null) {
-					//check if the current session is to be an admin session
-					if(trans.miscInfo.equals("A")) {
-						adminSession = true;
-					}else{
-						adminSession = false;
-					}
 					//display which account is logged in
-					System.out.println(curAcc.toString(true) + " Session Started "+((adminSession==true) ? "Admin" : "Standard"));
+					System.out.println(trans.accountName + " Session Started "+((adminSession==true) ? "Admin" : "Standard"));
 				}else{
 					System.out.println("Invalid Account");
 				}
@@ -181,6 +184,7 @@ public ArrayList<Account> HandleTransactions(){
 				System.out.println("Unknown Transaction Type???");
 				break;
 			}
+			System.out.println(curAcc.toString(true));
 		}
 	}
 	return accounts;

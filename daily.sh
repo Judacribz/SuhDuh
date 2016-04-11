@@ -18,6 +18,7 @@ rm -rf $merged
 # iterate over every file in the inputs directory
 for i in $(ls $in)
 do
+echo "ITS HERE LOOK $i"
   $front/bank.exe $front/CurrentBankAccounts.dat $txn/${i}.trf < $in/$i
 done;
 
@@ -33,4 +34,4 @@ done;
 cd $back
 ant run
 cd $path
-cp $back/$current $front/$current.dkfkjs
+cp $back/$current $front/$current

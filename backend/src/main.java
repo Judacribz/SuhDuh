@@ -4,6 +4,7 @@
 //Output files are "CurrentBankAccounts.dat" and "MasterBankAccounts.dat"
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class main {
 
@@ -16,14 +17,12 @@ public static void main(String[] args){
 	//get the transactions from the transaction log
 	data.getTransactions();
 
-
 	//Process transactions that have been read in by currentData
 	TransactionHandler transHandler = new TransactionHandler(data.accounts, data.transactions);
 	//Create a new list to store the updated accounts
-	ArrayList<Account> newAccounts;
+	HashMap<Integer,Account> newAccounts;
 	//process transactions and return the new accounts information
 	newAccounts = transHandler.HandleTransactions();
-
 
 	//create a BankAccountWriter to generate a new master and current
 	//pass in the new accounts information that we created from the transaction handler
