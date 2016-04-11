@@ -9,6 +9,10 @@ in=$1
 merged=$back/Transactions.trf
 current=CurrentBankAccounts.dat
 
+cd $front
+make -f makefile
+cd $path
+
 #makes transaction file directory if it doesnt exist.
 [ -d $txn ] || mkdir $txn
 
